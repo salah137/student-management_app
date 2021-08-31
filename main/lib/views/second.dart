@@ -19,101 +19,10 @@ class LevelScreen extends StatelessWidget {
                 ? contr.level2
                 : contr.level3;
 
-        return Scaffold(
-          body: SafeArea(
-            child: DataTable(
-              columns: <DataColumn>[
-                DataColumn(
-                  label: Text(
-                    ' ',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    ' ',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    '',
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    "",
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                if (code != "3AC")
-                  DataColumn(
-                    label: Text(
-                      "",
-                      style: TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ),
-                DataColumn(
-                  label: Text(
-                    "",
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-                DataColumn(
-                  label: Text(
-                    "",
-                    style: TextStyle(fontStyle: FontStyle.italic),
-                  ),
-                ),
-              ],
-              rows: <DataRow>[
-                ...usedList.map(
-                  (e) => DataRow(
-                    cells: [
-                      DataCell(
-                        Text(
-                          e["name"].toString(),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          e["students"].toString(),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          e["fard1"].toString(),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          e["fard2"].toString(),
-                        ),
-                      ),
-                      if (code != "3AC")
-                        DataCell(
-                          Text(
-                            e["fard3"].toString(),
-                          ),
-                        ),
-                      DataCell(
-                        Text(
-                          e["nchita"].toString(),
-                        ),
-                      ),
-                      DataCell(
-                        Text(
-                          e["moyen"].toString(),
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        );
+        return SafeArea(
+            child: Scaffold(
+          body: Container(),
+        ));
       },
       init: MainController(),
     );

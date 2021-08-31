@@ -27,11 +27,6 @@ class MainController extends GetxController {
         "CREATE TABLE third (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,inchita REAL,moyen REAL)",
       );
     }, onOpen: (db) async {
-      db.transaction((txn) async {
-        await txn.rawInsert(
-            "INSERT INTO third (name,students,fard1,fard1,inchita,moyen) VALUES(?,?,?,?,?,?)",
-            ["1AC", 12, 23.0, 33.0, 22.0, 11.0]);
-      });
       await getData(db);
       print("done");
     });
@@ -43,7 +38,7 @@ class MainController extends GetxController {
     level2 = await db.rawQuery("SELECT * FROM second");
 
     level3 = await db.rawQuery("SELECT * FROM third");
-/*
+
     level1.forEach(
       (i) async {
         classs.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
@@ -60,6 +55,6 @@ class MainController extends GetxController {
       (i) async {
         classs.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
-    );*/
+    );
   }
 }

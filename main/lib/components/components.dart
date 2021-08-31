@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stu_ma_/views/second.dart';
+import 'package:stu_ma_/views/table.dart';
 
 Widget itemBuilder(context, model, code) {
   print(code);
@@ -28,3 +29,21 @@ Widget itemBuilder(context, model, code) {
     ),
   );
 }
+
+Widget classBuilder(model) => GestureDetector(
+      onTap: (){
+        Get.to(()=>StudentTableScreen(model: model,));
+      },
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.grey, borderRadius: BorderRadius.circular(15)),
+        margin: EdgeInsets.all(10),
+        height: 100,
+        width: double.infinity,
+        child: Text(
+          "2AC",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        ),
+        alignment: Alignment.center,
+      ),
+    );
