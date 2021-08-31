@@ -3,7 +3,10 @@ import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
 class MainController extends GetxController {
-  List classs = [].obs;
+  List classs1 = [].obs;
+  List classs2 = [].obs;
+  List classs3 = [].obs;
+
   List level1 = [].obs;
   List level3 = [].obs;
   List level2 = [].obs;
@@ -18,7 +21,7 @@ class MainController extends GetxController {
   Future openMyDataBase() async {
     database = await openDatabase("my.db", version: 1, onCreate: (db, v) {
       db.execute(
-        "CREATE TABLE first (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,fard3 REAL,nchita REAL,moyen REAL)",
+        "CREATE TABLE first (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,fard3 REAL,inchita REAL,moyen REAL)",
       );
       db.execute(
         "CREATE TABLE second (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,fard3 REAL,inchita REAL ,moyen REAL)",
@@ -30,6 +33,9 @@ class MainController extends GetxController {
       await getData(db);
       print("done");
     });
+    await addAclass("className", "first");
+    await addAclass("className1", "second");
+    await addAclass("className 2", "third");
   }
 
   Future getData(Database db) async {
@@ -41,20 +47,64 @@ class MainController extends GetxController {
 
     level1.forEach(
       (i) async {
-        classs.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs1.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
 
     level2.forEach(
       (i) async {
-        classs.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs2.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
 
     level3.forEach(
       (i) async {
-        classs.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs3.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
+
+    print(classs1);
+    print(classs2);
+    print(classs3);
+
+    print(level1);
+    print(level2);
+    print(level3);
+  }
+
+  Future addAclass(className, classLevel) async {
+    database!.transaction(
+      (txn) async {
+        classLevel != "third"
+            ? await txn.rawInsert(
+                "INSERT INTO $classLevel(name , students , fard1 ,fard2 ,fard3 ,inchita ,moyen ) VALUES(?,?,?,?,?,?,?)",
+                [
+                    className,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    
+                  ])
+            : await txn.rawInsert(
+                "INSERT INTO $classLevel(name , students , fard1 ,fard2 ,inchita ,moyen ) VALUES(?,?,?,?,?,?,?)",
+                [
+                    className,
+                    0,
+                    0,
+                    0,
+                    0,
+                  ]);
+      },
+    );
+  
+    classLevel != "third"
+        ? await database!.execute(
+            "CREATE TABLE $className (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,fard3 REAL,inchita REAL,moyen REAL)")
+        : await database!.execute(
+            "CREATE TABLE $className (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,inchita REAL,moyen REAL)");
+
+    getData(database!);
   }
 }
