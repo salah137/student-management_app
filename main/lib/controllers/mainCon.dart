@@ -33,9 +33,6 @@ class MainController extends GetxController {
       await getData(db);
       print("done");
     });
-    await addAclass("className", "first");
-    await addAclass("className1", "second");
-    await addAclass("className 2", "third");
   }
 
   Future getData(Database db) async {
@@ -85,20 +82,20 @@ class MainController extends GetxController {
                     0,
                     0,
                     0,
-                    
                   ])
             : await txn.rawInsert(
                 "INSERT INTO $classLevel(name , students , fard1 ,fard2 ,inchita ,moyen ) VALUES(?,?,?,?,?,?,?)",
                 [
-                    className,
-                    0,
-                    0,
-                    0,
-                    0,
-                  ]);
+                  className,
+                  0,
+                  0,
+                  0,
+                  0,
+                ],
+              );
       },
     );
-  
+
     classLevel != "third"
         ? await database!.execute(
             "CREATE TABLE $className (id INTEGER PRIMARY KEY, name TEXT, students INTEGER, fard1 REAL,fard2 REAL,fard3 REAL,inchita REAL,moyen REAL)")
@@ -107,4 +104,7 @@ class MainController extends GetxController {
 
     getData(database!);
   }
+
+
+
 }

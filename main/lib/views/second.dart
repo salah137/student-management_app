@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stu_ma_/components/components.dart';
 import 'package:stu_ma_/controllers/mainCon.dart';
 
 class LevelScreen extends StatelessWidget {
@@ -19,10 +20,12 @@ class LevelScreen extends StatelessWidget {
                 ? contr.level2
                 : contr.level3;
 
-        return SafeArea(
-            child: Scaffold(
-          body: Container(),
-        ));
+        return Scaffold(
+          body: ListView.separated(
+              itemBuilder: (ctx, i) => classBuilder(usedList[i]),
+              separatorBuilder: (ctx, i) => Container(),
+              itemCount: usedList.length),
+        );
       },
       init: MainController(),
     );
