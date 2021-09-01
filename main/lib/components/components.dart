@@ -30,25 +30,29 @@ Widget itemBuilder(context, model, code) {
   );
 }
 
-Widget classBuilder(model, code) => GestureDetector(
-      onTap: () {
-        Get.to(
-          () => StudentTableScreen(
-            model: model,
-            code: code,
-          ),
-        );
-      },
-      child: Container(
-        decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(15)),
-        margin: EdgeInsets.all(10),
-        height: 100,
-        width: double.infinity,
-        child: Text(
-          model["name"],
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+Widget classBuilder(model, code) {
+ 
+ return GestureDetector(
+    onTap: () {
+      
+      Get.to(
+        () => StudentTableScreen(
+          model: model,
+          code: code,
         ),
-        alignment: Alignment.center,
+      );
+    },
+    child: Container(
+      decoration: BoxDecoration(
+          color: Colors.grey, borderRadius: BorderRadius.circular(15)),
+      margin: EdgeInsets.all(10),
+      height: 100,
+      width: double.infinity,
+      child: Text(
+        model["name"],
+        style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ),
-    );
+      alignment: Alignment.center,
+    ),
+  );
+}

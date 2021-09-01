@@ -5,14 +5,10 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:stu_ma_/models/Consts.dart';
 
 class MainController extends GetxController {
-  var classs1 = [].obs;
-  var classs2 = [].obs;
-  var classs3 = [].obs;
-
   var level1 = [].obs;
   var level3 = [].obs;
   var level2 = [].obs;
-
+  var usedStudentLisy = [].obs;
   @override
   void onInit() async {
     await openMyDataBase();
@@ -44,28 +40,6 @@ class MainController extends GetxController {
     level2.value = await db.rawQuery("SELECT * FROM second");
 
     level3.value = await db.rawQuery("SELECT * FROM third");
-
-    level1.forEach(
-      (i) async {
-        classs1.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
-      },
-    );
-
-    level2.forEach(
-      (i) async {
-        classs2.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
-      },
-    );
-
-    level3.value.forEach(
-      (i) async {
-        classs3.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
-      },
-    );
-
-    print("classs1 $classs1");
-    print("classs2 $classs2");
-    print("class3 $classs3");
 
     print("level1 $level1");
     print("level2 $level2");
@@ -192,5 +166,10 @@ class MainController extends GetxController {
           ),
         ),
         backgroundColor: Colors.white);
+  }
+
+  getClassByName(name) async {
+    usedStudentLisy.value = await database!.rawQuery("SELECT * FROM ${name}");
+    
   }
 }
