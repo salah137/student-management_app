@@ -15,16 +15,20 @@ class LevelScreen extends StatelessWidget {
     return Obx(
       () => Scaffold(
         body: ListView.builder(
-            itemBuilder: (ctx, i) => classBuilder(code == "1AC"
+          itemBuilder: (ctx, i) => classBuilder(
+            code == "1AC"
                 ? cont.level1.value[i]
                 : code == "2AC"
                     ? cont.level2.value[i]
-                    : cont.level3.value[i]),
-            itemCount: code == "1AC"
-                ? cont.level1.value.length
-                : code == "2AC"
-                    ? cont.level2.value. length
-                    : cont.level3.value.length),
+                    : cont.level3.value[i],
+            code,
+          ),
+          itemCount: code == "1AC"
+              ? cont.level1.value.length
+              : code == "2AC"
+                  ? cont.level2.value.length
+                  : cont.level3.value.length,
+        ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             cont.addFromUi(code, context);

@@ -30,9 +30,14 @@ Widget itemBuilder(context, model, code) {
   );
 }
 
-Widget classBuilder(model) => GestureDetector(
-      onTap: (){
-        Get.to(()=>StudentTableScreen(model: model,));
+Widget classBuilder(model, code) => GestureDetector(
+      onTap: () {
+        Get.to(
+          () => StudentTableScreen(
+            model: model,
+            code: code,
+          ),
+        );
       },
       child: Container(
         decoration: BoxDecoration(

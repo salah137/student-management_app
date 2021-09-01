@@ -3,16 +3,16 @@ import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:stu_ma_/models/Consts.dart';
-import 'package:stu_ma_/views/second.dart';
 
 class MainController extends GetxController {
   var classs1 = [].obs;
   var classs2 = [].obs;
   var classs3 = [].obs;
-  var toUse = "".obs;
+
   var level1 = [].obs;
   var level3 = [].obs;
   var level2 = [].obs;
+
   @override
   void onInit() async {
     await openMyDataBase();
