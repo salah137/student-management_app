@@ -41,7 +41,7 @@ Widget classBuilder(model) => GestureDetector(
         height: 100,
         width: double.infinity,
         child: Text(
-          "2AC",
+          model["name"],
           style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
         ),
         alignment: Alignment.center,

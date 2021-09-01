@@ -21,12 +21,13 @@ class LevelScreen extends StatelessWidget {
                 : contr.level3;
 
         return Scaffold(
-          body: ListView.separated(
+          body: ListView.builder(
               itemBuilder: (ctx, i) => classBuilder(usedList[i]),
-              separatorBuilder: (ctx, i) => Container(),
               itemCount: usedList.length),
           floatingActionButton: FloatingActionButton(
-            onPressed: contr.addFromUi,
+            onPressed: () {
+              contr.addFromUi(code, context);
+            },
             child: Icon(Icons.add),
           ),
         );
