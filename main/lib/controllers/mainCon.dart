@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
+import 'package:stu_ma_/models/Consts.dart';
 import 'package:stu_ma_/views/second.dart';
 
 class MainController extends GetxController {
@@ -66,7 +67,7 @@ class MainController extends GetxController {
     print("classs2 $classs2");
     print("class3 $classs3");
 
-    print("level1 $level1" );
+    print("level1 $level1");
     print("level2 $level2");
     print("level3 $level3");
   }
@@ -86,7 +87,7 @@ class MainController extends GetxController {
                     0,
                   ])
             : await txn.rawInsert(
-                "INSERT INTO $classLevel(name , students , fard1 ,fard2 ,inchita ,moyen ) VALUES(?,?,?,?,?,?,?)",
+                "INSERT INTO $classLevel(name , students , fard1 ,fard2 ,inchita ,moyen ) VALUES(?,?,?,?,?,?)",
                 [
                   className,
                   0,
@@ -119,7 +120,32 @@ class MainController extends GetxController {
               Container(
                 child: TextFormField(
                   validator: (v) {
+                    var contSpec = false;
+                    var isUsed = false;
+                    Consts.speciaChar.forEach((element) {
+                      if (v!.contains(element)) contSpec = true;
+                    });
+                    level == "1AC"
+                        ? level1.value.forEach(
+                            (element) {
+                              if (element["name"] == v!) isUsed = true;
+                            },
+                          )
+                        : level == "2AC"
+                            ? level2.value.forEach(
+                                (element) {
+                                  if (element["name"] == v!) isUsed = true;
+                                },
+                              )
+                            : level3.value.forEach(
+                                (element) {
+                                  if (element["name"] == v!) isUsed = true;
+                                },
+                              );
+
                     if (v == null || v.isEmpty) return "ارجوك ادخل اسم القسم";
+                    if (contSpec) return "الاسم غير مناسب";
+                    if (isUsed) return "الاسم مستعمل من قبل";
                     return null;
                   },
                   controller: classNamCont,
@@ -146,9 +172,16 @@ class MainController extends GetxController {
                 child: ClipRRect(
                   child: MaterialButton(
                     onPressed: () {
-                      addAclass(classNamCont.text, level == "1AC"?"first":level == "2AC"?"second":"third");
-                      Navigator.pop(context);
-                      Get.to(LevelScreen(code: level));
+                      if (myKey.currentState!.validate()) {
+                        addAclass(
+                            classNamCont.text,
+                            level == "1AC"
+                                ? "first"
+                                : level == "2AC"
+                                    ? "second"
+                                    : "third");
+                        Navigator.pop(context);
+                      }
                     },
                     child: Text("تم"),
                   ),
