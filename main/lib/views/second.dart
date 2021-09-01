@@ -12,27 +12,26 @@ class LevelScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     MainController cont = Get.find();
 
-    return GetBuilder<MainController>(
-      builder: (contr) {
-        var usedList = code == "1AC"
-            ? contr.level1
-            : code == "2AC"
-                ? contr.level2
-                : contr.level3;
-
-        return Scaffold(
-          body: ListView.builder(
-              itemBuilder: (ctx, i) => classBuilder(usedList[i]),
-              itemCount: usedList.length),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              contr.addFromUi(code, context);
-            },
-            child: Icon(Icons.add),
-          ),
-        );
-      },
-      init: MainController(),
+    return Obx(
+      () => Scaffold(
+        body: ListView.builder(
+            itemBuilder: (ctx, i) => classBuilder(code == "1AC"
+                ? cont.level1.value[i]
+                : code == "2AC"
+                    ? cont.level2.value[i]
+                    : cont.level3.value[i]),
+            itemCount: code == "1AC"
+                ? cont.level1.value.length
+                : code == "2AC"
+                    ? cont.level2.value. length
+                    : cont.level3.value.length),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            cont.addFromUi(code, context);
+          },
+          child: Icon(Icons.add),
+        ),
+      ),
     );
   }
 }

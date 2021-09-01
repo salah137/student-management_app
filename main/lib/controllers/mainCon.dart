@@ -5,13 +5,13 @@ import 'package:sqflite/sqlite_api.dart';
 import 'package:stu_ma_/views/second.dart';
 
 class MainController extends GetxController {
-  List classs1 = [].obs;
-  List classs2 = [].obs;
-  List classs3 = [].obs;
+  var classs1 = [].obs;
+  var classs2 = [].obs;
+  var classs3 = [].obs;
   var toUse = "".obs;
-  List level1 = [].obs;
-  List level3 = [].obs;
-  List level2 = [].obs;
+  var level1 = [].obs;
+  var level3 = [].obs;
+  var level2 = [].obs;
   @override
   void onInit() async {
     await openMyDataBase();
@@ -38,37 +38,37 @@ class MainController extends GetxController {
   }
 
   Future getData(Database db) async {
-    level1 = await db.rawQuery("SELECT * FROM first");
+    level1.value = await db.rawQuery("SELECT * FROM first");
 
-    level2 = await db.rawQuery("SELECT * FROM second");
+    level2.value = await db.rawQuery("SELECT * FROM second");
 
-    level3 = await db.rawQuery("SELECT * FROM third");
+    level3.value = await db.rawQuery("SELECT * FROM third");
 
     level1.forEach(
       (i) async {
-        classs1.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs1.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
 
     level2.forEach(
       (i) async {
-        classs2.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs2.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
 
-    level3.forEach(
+    level3.value.forEach(
       (i) async {
-        classs3.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
+        classs3.value.addAll(await db.rawQuery("SELECT * FROM ${i["name"]}"));
       },
     );
 
-    print(classs1);
-    print(classs2);
-    print(classs3);
+    print("classs1 $classs1");
+    print("classs2 $classs2");
+    print("class3 $classs3");
 
-    print(level1);
-    print(level2);
-    print(level3);
+    print("level1 $level1" );
+    print("level2 $level2");
+    print("level3 $level3");
   }
 
   Future addAclass(className, classLevel) async {
@@ -146,7 +146,7 @@ class MainController extends GetxController {
                 child: ClipRRect(
                   child: MaterialButton(
                     onPressed: () {
-                      addAclass(classNamCont.text, level);
+                      addAclass(classNamCont.text, level == "1AC"?"first":level == "2AC"?"second":"third");
                       Navigator.pop(context);
                       Get.to(LevelScreen(code: level));
                     },
