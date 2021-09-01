@@ -1,4 +1,5 @@
-import 'package:get/state_manager.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 
@@ -105,6 +106,17 @@ class MainController extends GetxController {
     getData(database!);
   }
 
-
-
+  void addFromUi() {
+    GlobalKey<FormState> myKey = GlobalKey<FormState>();
+    Get.bottomSheet(
+      
+      Form(
+      key: myKey,
+      child: Column(
+        children: [TextFormField()],
+      ),
+    ),
+    backgroundColor: Colors.white
+    );
+  }
 }

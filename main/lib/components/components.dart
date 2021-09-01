@@ -18,7 +18,7 @@ Widget itemBuilder(context, model, code) {
       margin: EdgeInsets.all(20),
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
-        color: Color.fromRGBO(155, 50, 0, 1),
+        color: Color.fromRGBO(155, 150, 0, 1),
         borderRadius: BorderRadius.circular(20),
       ),
       height: MediaQuery.of(context).size.height / 6,

@@ -25,6 +25,10 @@ class LevelScreen extends StatelessWidget {
               itemBuilder: (ctx, i) => classBuilder(usedList[i]),
               separatorBuilder: (ctx, i) => Container(),
               itemCount: usedList.length),
+          floatingActionButton: FloatingActionButton(
+            onPressed: contr.addFromUi,
+            child: Icon(Icons.add),
+          ),
         );
       },
       init: MainController(),
