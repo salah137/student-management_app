@@ -484,10 +484,40 @@ class MainController extends GetxController {
     return toReturn;
   }
 
-  void deleteClass(id, level) async {
+  Future deleteClass(
+    id,
+    level,
+  ) async {
     await database!.rawDelete(
-      "DELETE FROM $level1 WHERE id = ?",
-      [id,],
+      "DELETE FROM $level WHERE id = ?",
+      [
+        id,
+      ],
+    );
+    getData(database!);
+  }
+
+  deletUi(id, level, context) {
+    Get.bottomSheet(
+      Container(
+        margin: EdgeInsets.all(50),
+        height: 40,
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.green,
+          borderRadius: BorderRadius.circular(15),
+        ),
+        child: ClipRRect(
+          child: MaterialButton(
+            onPressed: () async {
+              await deleteClass(id, level);
+              Navigator.pop(context);
+            },
+            child: Text("مسح القسم"),
+          ),
+          borderRadius: BorderRadius.circular(15),
+        ),
+      ),
     );
   }
 }

@@ -31,8 +31,18 @@ Widget itemBuilder(context, model, code) {
   );
 }
 
-Widget classBuilder(model, code, MainController controller) {
+Widget classBuilder(model, code, MainController controller, context) {
   return GestureDetector(
+    onLongPress: () {
+      controller.deletUi(
+          model["id"],
+          code == "1AC"
+              ? "first"
+              : code == "2AC"
+                  ? "second"
+                  : "third",
+          context);
+    },
     onTap: () async {
       await controller.getClassByName(model["name"]);
       Get.to(
@@ -56,4 +66,3 @@ Widget classBuilder(model, code, MainController controller) {
     ),
   );
 }
-
