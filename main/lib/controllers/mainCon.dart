@@ -316,9 +316,8 @@ class MainController extends GetxController {
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   enabled: false,
-                  decoration: InputDecoration(
-                      hintText:
-                          "${usedModel["moyen"]}"),
+                  decoration:
+                      InputDecoration(hintText: "${usedModel["moyen"]}"),
                 ),
                 height: 50,
               ),
@@ -468,7 +467,7 @@ class MainController extends GetxController {
         backgroundColor: Colors.white);
   }
 
-  getRating(moyn) {
+  String getRating(moyn) {
     var toReturn = moyn < 5
         ? "ضعيف جدا"
         : moyn > 5 && moyn <= 9
@@ -483,5 +482,12 @@ class MainController extends GetxController {
                             ? "حسن"
                             : "جيد";
     return toReturn;
+  }
+
+  void deleteClass(id, level) async {
+    await database!.rawDelete(
+      "DELETE FROM $level1 WHERE id = ?",
+      [id,],
+    );
   }
 }
