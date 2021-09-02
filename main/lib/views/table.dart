@@ -30,8 +30,13 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
         return Scaffold(
           body: ListView(
             children: [
-              ...controller.usedStudentList.map((element) => controller
-                  .tableComponents(element, widget.code, widget.model["name"]))
+              ...controller.usedStudentList.map(
+                (element) => controller.tableComponents(
+                  element,
+                  widget.code,
+                  widget.model["name"],
+                ),
+              )
             ],
           ),
         );

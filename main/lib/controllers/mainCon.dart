@@ -307,7 +307,8 @@ class MainController extends GetxController {
                 height: 40,
                 child: FloatingActionButton(
                   onPressed: () async {
-                    if (controller.isEditing.value) updateStudents(usedModel, code, name);
+                    if (controller.isEditing.value)
+                      updateStudents(usedModel, code, name);
                     controller.isEditing.value = !controller.isEditing.value;
                   },
                   child: Icon(controller.isEditing.value
@@ -320,5 +321,108 @@ class MainController extends GetxController {
         );
       },
     );
+  }
+
+  void addAstudents(stuName, stuClass, code) async {
+    await database!.transaction(
+      (txn) async {
+        await txn.rawInsert(
+          "INSERT INTO $stuClass (name,fard1,fard2,fard3,inchita,moyen) VALUES(?,?,?,?,?,?)",
+          [
+            stuName,
+            0,
+            0,
+            0,
+            0,
+            0,
+          ],
+        );
+      },
+    );
+    await getData(database!);
+  }
+
+  void addStudentUi(level, stuClass, context) async {
+    GlobalKey<FormState> myKey = GlobalKey<FormState>();
+    TextEditingController classNamCont = TextEditingController();
+    Get.bottomSheet(
+        Form(
+          key: myKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                child: TextFormField(
+                  validator: (v) {
+                    var contSpec = false;
+                    var isUsed = false;
+                    Consts.speciaChar.forEach((element) {
+                      if (v!.contains(element)) contSpec = true;
+                    });
+                    level == "1AC"
+                        ? usedStudentList.value.forEach(
+                            (element) {
+                              if (element["name"] == v!) isUsed = true;
+                            },
+                          )
+                        : level == "2AC"
+                            ? usedStudentList.value.forEach(
+                                (element) {
+                                  if (element["name"] == v!) isUsed = true;
+                                },
+                              )
+                            : usedStudentList.value.forEach(
+                                (element) {
+                                  if (element["name"] == v!) isUsed = true;
+                                },
+                              );
+
+                    if (v == null || v.isEmpty) return "ارجوك ادخل اسم التلميد";
+                    if (contSpec) return "الاسم غير مناسب";
+                    if (isUsed) return "الاسم مستعمل من قبل";
+                    return null;
+                  },
+                  controller: classNamCont,
+                  decoration: InputDecoration(
+                    hintText: " اسم القسم",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                margin: EdgeInsets.all(10),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Container(
+                margin: EdgeInsets.all(10),
+                height: 40,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.green,
+                  borderRadius: BorderRadius.circular(15),
+                ),
+                child: ClipRRect(
+                  child: MaterialButton(
+                    onPressed: () {
+                      if (myKey.currentState!.validate()) {
+                        addAstudents(
+                          classNamCont.text,
+                          stuClass,
+                          level,
+                        );
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: Text("تم"),
+                  ),
+                  borderRadius: BorderRadius.circular(15),
+                ),
+              ),
+            ],
+          ),
+        ),
+        backgroundColor: Colors.white);
   }
 }
