@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
@@ -217,7 +219,7 @@ class MainController extends GetxController {
 
   Widget tableComponents(model, code, name) {
     TextEditingController? fard3;
-    Map usedModel = model;
+    Map usedModel = Map<String,dynamic>.from(model);
     TextEditingController name =
         TextEditingController(text: model["name"].toString());
     TextEditingController fard1 =
@@ -306,9 +308,10 @@ class MainController extends GetxController {
               child: Container(
                 height: 40,
                 child: FloatingActionButton(
+                  heroTag: "btn${Random().nextInt(100)}",
                   onPressed: () async {
                     if (controller.isEditing.value)
-                      updateStudents(usedModel, code, name);
+                      updateStudents(usedModel, code, name.text);
                     controller.isEditing.value = !controller.isEditing.value;
                   },
                   child: Icon(controller.isEditing.value
@@ -326,7 +329,7 @@ class MainController extends GetxController {
   void addAstudents(stuName, stuClass, code) async {
     await database!.transaction(
       (txn) async {
-        await txn.rawInsert(
+       code != "3AC"? await txn.rawInsert(
           "INSERT INTO $stuClass (name,fard1,fard2,fard3,inchita,moyen) VALUES(?,?,?,?,?,?)",
           [
             stuName,
@@ -336,9 +339,20 @@ class MainController extends GetxController {
             0,
             0,
           ],
+        ):await txn.rawInsert(
+          "INSERT INTO $stuClass (name,fard1,fard2,inchita,moyen) VALUES(?,?,?,?,?)",
+          [
+            stuName,
+            0,
+            0,
+            0,
+            0,
+            
+          ],
         );
       },
     );
+    await getClassByName(stuClass);
     await getData(database!);
   }
 

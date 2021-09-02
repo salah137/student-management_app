@@ -39,6 +39,15 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
               )
             ],
           ),
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              controller.addStudentUi(
+                widget.code,
+                widget.model["name"],
+                context,
+              );
+            },
+          ),
         );
       },
     );
