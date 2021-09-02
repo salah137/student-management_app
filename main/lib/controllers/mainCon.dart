@@ -183,13 +183,15 @@ class MainController extends GetxController {
         model["fard2"],
         model["inchita"],
       );
+      print(moyen);
 
       await database!.rawUpdate(
-        "UPDATE $name SET fard1 = ?,fard2 = ?,inchita = ? WHERE id = ?",
+        "UPDATE $name SET fard1 = ?,fard2 = ?,inchita = ?, moyen = ? WHERE id = ?",
         [
           model["fard1"],
           model["fard2"],
           model["inchita"],
+          moyen,
           model["id"],
         ],
       );
@@ -203,23 +205,27 @@ class MainController extends GetxController {
         model["inchita"],
       );
 
+      print(moyen);
+
       database!.rawUpdate(
-        "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ? WHERE id = ?",
+        "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ?, moyen = ? WHERE id = ?",
         [
           model["fard1"],
           model["fard2"],
           model["fard3"],
           model["inchita"],
+          moyen,
           model["id"],
         ],
       );
     }
-    getData(database!);
+    await getClassByName(name);
+    await getData(database!);
   }
 
-  Widget tableComponents(model, code, name) {
+  Widget tableComponents(model, code, namee) {
     TextEditingController? fard3;
-    Map usedModel = Map<String,dynamic>.from(model);
+    Map usedModel = Map<String, dynamic>.from(model);
     TextEditingController name =
         TextEditingController(text: model["name"].toString());
     TextEditingController fard1 =
@@ -227,8 +233,7 @@ class MainController extends GetxController {
     TextEditingController fatrd2 =
         TextEditingController(text: model["fard2"].toString());
     if (code != "3AC")
-      TextEditingController fard3 =
-          TextEditingController(text: model["fard3"].toString());
+      fard3 = TextEditingController(text: model["fard3"].toString());
     TextEditingController inchita =
         TextEditingController(text: model["inchita"].toString());
     MainController controller = Get.find();
@@ -241,7 +246,7 @@ class MainController extends GetxController {
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   onChanged: (v) {
-                    usedModel["name"] = v;
+                    usedModel["name"] = int.tryParse(v);
                   },
                   enabled: controller.isEditing.value,
                   controller: name,
@@ -254,7 +259,8 @@ class MainController extends GetxController {
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   onChanged: (v) {
-                    usedModel["name"] = v;
+                    usedModel["fard1"] = int.tryParse(v);
+                    ;
                   },
                   enabled: controller.isEditing.value,
                   controller: fard1,
@@ -266,6 +272,10 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onChanged: (v) {
+                    usedModel["fard2"] = int.tryParse(v);
+                    ;
+                  },
                   enabled: controller.isEditing.value,
                   controller: fatrd2,
                 ),
@@ -277,6 +287,10 @@ class MainController extends GetxController {
                 child: Container(
                   margin: EdgeInsets.all(5),
                   child: TextField(
+                    onChanged: (v) {
+                      usedModel["fard3"] = int.tryParse(v);
+                      ;
+                    },
                     enabled: controller.isEditing.value,
                     controller: fard3!,
                   ),
@@ -287,6 +301,10 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onChanged: (v) {
+                    usedModel["inchita"] = int.tryParse(v);
+                    ;
+                  },
                   enabled: controller.isEditing.value,
                   controller: inchita,
                 ),
@@ -311,7 +329,7 @@ class MainController extends GetxController {
                   heroTag: "btn${Random().nextInt(100)}",
                   onPressed: () async {
                     if (controller.isEditing.value)
-                      updateStudents(usedModel, code, name.text);
+                      updateStudents(usedModel, code, namee);
                     controller.isEditing.value = !controller.isEditing.value;
                   },
                   child: Icon(controller.isEditing.value
@@ -329,27 +347,28 @@ class MainController extends GetxController {
   void addAstudents(stuName, stuClass, code) async {
     await database!.transaction(
       (txn) async {
-       code != "3AC"? await txn.rawInsert(
-          "INSERT INTO $stuClass (name,fard1,fard2,fard3,inchita,moyen) VALUES(?,?,?,?,?,?)",
-          [
-            stuName,
-            0,
-            0,
-            0,
-            0,
-            0,
-          ],
-        ):await txn.rawInsert(
-          "INSERT INTO $stuClass (name,fard1,fard2,inchita,moyen) VALUES(?,?,?,?,?)",
-          [
-            stuName,
-            0,
-            0,
-            0,
-            0,
-            
-          ],
-        );
+        code != "3AC"
+            ? await txn.rawInsert(
+                "INSERT INTO $stuClass (name,fard1,fard2,fard3,inchita,moyen) VALUES(?,?,?,?,?,?)",
+                [
+                  stuName,
+                  0,
+                  0,
+                  0,
+                  0,
+                  0,
+                ],
+              )
+            : await txn.rawInsert(
+                "INSERT INTO $stuClass (name,fard1,fard2,inchita,moyen) VALUES(?,?,?,?,?)",
+                [
+                  stuName,
+                  0,
+                  0,
+                  0,
+                  0,
+                ],
+              );
       },
     );
     await getClassByName(stuClass);
