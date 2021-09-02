@@ -173,7 +173,16 @@ class MainController extends GetxController {
     usedStudentLisy.value = await database!.rawQuery("SELECT * FROM ${name}");
   }
 
-  tableComponents(model, code) {
+  updateStudents(model, code) async {
+    var moyen;
+    if(code == "3AC"){
+
+    } else {
+      
+    }
+  }
+
+  Widget tableComponents(model, code, name) {
     Map usedModel = model;
     TextEditingController name = TextEditingController(text: model["name"]);
     TextEditingController fard1 = TextEditingController(text: model["fard1"]);
@@ -251,7 +260,7 @@ class MainController extends GetxController {
             child: Container(
               height: 40,
               child: FloatingActionButton(
-                onPressed: () {
+                onPressed: () async {
                   controller.isEditing.value = !controller.isEditing.value;
                 },
                 child: Icon(
