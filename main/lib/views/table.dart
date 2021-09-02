@@ -47,6 +47,7 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
                 context,
               );
             },
+            child: Icon(Icons.add),
           ),
         );
       },

@@ -417,7 +417,7 @@ class MainController extends GetxController {
                   },
                   controller: classNamCont,
                   decoration: InputDecoration(
-                    hintText: " اسم القسم",
+                    hintText: " اسم التلميد",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
