@@ -128,6 +128,7 @@ class MainController extends GetxController {
                   controller: classNamCont,
                   decoration: InputDecoration(
                     hintText: " اسم القسم",
+                    hintTextDirection: TextDirection.rtl,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -289,7 +290,6 @@ class MainController extends GetxController {
                   child: TextField(
                     onChanged: (v) {
                       usedModel["fard3"] = int.tryParse(v);
-                      ;
                     },
                     enabled: controller.isEditing.value,
                     controller: fard3!,
@@ -316,10 +316,18 @@ class MainController extends GetxController {
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   enabled: false,
-                  decoration:
-                      InputDecoration(hintText: "${usedModel["moyen"]}"),
+                  decoration: InputDecoration(
+                      hintText:
+                          "${usedModel["moyen"]}"),
                 ),
                 height: 50,
+              ),
+            ),
+            Expanded(
+              child: Text(
+                getRating(
+                  usedModel["moyen"],
+                ),
               ),
             ),
             Expanded(
@@ -418,6 +426,7 @@ class MainController extends GetxController {
                   controller: classNamCont,
                   decoration: InputDecoration(
                     hintText: " اسم التلميد",
+                    hintTextDirection: TextDirection.rtl,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
@@ -457,5 +466,22 @@ class MainController extends GetxController {
           ),
         ),
         backgroundColor: Colors.white);
+  }
+
+  getRating(moyn) {
+    var toReturn = moyn < 5
+        ? "ضعيف جدا"
+        : moyn > 5 && moyn <= 9
+            ? "ضعيف"
+            : moyn >= 10 && moyn <= 11
+                ? "متوسط"
+                : moyn >= 12 && moyn <= 13
+                    ? "لاباس به"
+                    : moyn >= 14 && moyn <= 15
+                        ? "مستحسن"
+                        : moyn >= 16 && moyn <= 17
+                            ? "حسن"
+                            : "جيد";
+    return toReturn;
   }
 }
