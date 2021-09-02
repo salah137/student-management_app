@@ -1,5 +1,3 @@
-import 'package:get/get_connect/http/src/utils/utils.dart';
-
 class Consts {
   static const speciaChar = [
     "²",
