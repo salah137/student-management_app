@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:stu_ma_/controllers/mainCon.dart';
@@ -23,7 +21,6 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
     super.initState();
   }
 
-  bool edit = false;
   @override
   Widget build(BuildContext context) {
     print(widget.code);

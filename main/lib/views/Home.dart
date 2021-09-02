@@ -6,7 +6,6 @@ import 'package:stu_ma_/controllers/mainCon.dart';
 class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    MainController myControlller = Get.put(MainController());
 
     return GetBuilder<MainController>(
       builder: (c) {

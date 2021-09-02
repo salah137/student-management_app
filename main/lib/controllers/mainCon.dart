@@ -173,24 +173,54 @@ class MainController extends GetxController {
     usedStudentLisy.value = await database!.rawQuery("SELECT * FROM ${name}");
   }
 
-  updateStudents(model, code) async {
+  updateStudents(model, code, name) async {
     var moyen;
-    if(code == "3AC"){
+    if (code == "3AC") {
+      moyen = Consts.count3(
+        model["fard1"],
+        model["fard2"],
+        model["inchita"],
+      );
 
+      database!.rawUpdate(
+        "UPDATE $name SET fard1 = ?,fard2 = ?,inchita = ? WHERE id = ?",
+        [
+          model["fard1"],
+          model["fard2"],
+          model["inchita"],
+          model["id"],
+        ],
+      );
     } else {
-      
+      moyen = Consts.countfor12(
+        model["fard1"],
+        model["fard2"],
+        model["fard3"],
+        model["inchita"],
+      );
+
+      database!.rawUpdate(
+          "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ? WHERE id = ?",
+          [
+            model["fard1"],
+            model["fard2"],
+            model["fard3"],
+            model["inchita"],
+            model["id"]
+          ]);
     }
   }
 
   Widget tableComponents(model, code, name) {
+    TextEditingController? fard3;
     Map usedModel = model;
     TextEditingController name = TextEditingController(text: model["name"]);
-    TextEditingController fard1 = TextEditingController(text: model["fard1"]);
-    TextEditingController fatrd2 = TextEditingController(text: model["fard2"]);
+    TextEditingController fard1 = TextEditingController(text: model["fard1"].toString());
+    TextEditingController fatrd2 = TextEditingController(text: model["fard2"].toString());
     if (code != "3AC")
-      TextEditingController fard3 = TextEditingController(text: model["fard3"]);
+      TextEditingController fard3 = TextEditingController(text: model["fard3"].toString());
     TextEditingController inchita =
-        TextEditingController(text: model["inchita"]);
+        TextEditingController(text: model["inchita"].toString());
     MainController controller = Get.find();
     return Obx(() {
       return Row(
@@ -199,6 +229,9 @@ class MainController extends GetxController {
             child: Container(
               margin: EdgeInsets.all(5),
               child: TextField(
+                onChanged: (v) {
+                  usedModel["name"] = v;
+                },
                 enabled: controller.isEditing.value,
                 controller: name,
               ),
@@ -209,8 +242,11 @@ class MainController extends GetxController {
             child: Container(
               margin: EdgeInsets.all(5),
               child: TextField(
+                onChanged: (v) {
+                  usedModel["name"] = v;
+                },
                 enabled: controller.isEditing.value,
-                controller: TextEditingController(text: "name"),
+                controller: fard1,
               ),
               height: 50,
             ),
@@ -220,7 +256,7 @@ class MainController extends GetxController {
               margin: EdgeInsets.all(5),
               child: TextField(
                 enabled: controller.isEditing.value,
-                controller: TextEditingController(text: "name"),
+                controller: fatrd2,
               ),
               height: 50,
             ),
@@ -231,17 +267,17 @@ class MainController extends GetxController {
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   enabled: controller.isEditing.value,
-                  controller: TextEditingController(text: "name"),
+                  controller: fard3!,
                 ),
                 height: 50,
               ),
             ),
-          Expanded(
+          Expanded(        
             child: Container(
               margin: EdgeInsets.all(5),
               child: TextField(
                 enabled: controller.isEditing.value,
-                controller: TextEditingController(text: "name"),
+                controller: inchita,
               ),
               height: 50,
             ),
@@ -250,8 +286,10 @@ class MainController extends GetxController {
             child: Container(
               margin: EdgeInsets.all(5),
               child: TextField(
-                enabled: controller.isEditing.value,
-                controller: TextEditingController(text: "name"),
+                enabled: false,
+                decoration: InputDecoration(
+                  hintText: "${usedModel["moyen"]}"
+                ),
               ),
               height: 50,
             ),
