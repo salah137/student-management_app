@@ -42,7 +42,7 @@ class Consts {
 
   static double count3(fard1, fard2, inchita) {
     double total = 0.0;
-    total = (fard1 + fard2) / 2 + inchita / 4;
+    total = (((fard1 + fard2) / 2) * 3 + inchita) / 4;
     return total;
   }
 }

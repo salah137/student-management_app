@@ -23,13 +23,15 @@ class _StudentTableScreenState extends State<StudentTableScreen> {
 
   @override
   Widget build(BuildContext context) {
+    MainController controller = Get.find();
     print(widget.code);
-    return GetBuilder<MainController>(
-      init: MainController(),
-      builder: (contr) {
+    return Obx(
+      () {
         return Scaffold(
           body: ListView(
             children: [
+              ...controller.usedStudentList.map((element) => controller
+                  .tableComponents(element, widget.code, widget.model["name"]))
             ],
           ),
         );

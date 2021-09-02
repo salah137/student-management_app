@@ -8,7 +8,7 @@ class MainController extends GetxController {
   var level1 = [].obs;
   var level3 = [].obs;
   var level2 = [].obs;
-  var usedStudentLisy = [].obs;
+  var usedStudentList = [].obs;
   var isEditing = false.obs;
 
   Database? database;
@@ -170,7 +170,7 @@ class MainController extends GetxController {
   }
 
   Future getClassByName(name) async {
-    usedStudentLisy.value = await database!.rawQuery("SELECT * FROM ${name}");
+    usedStudentList.value = await database!.rawQuery("SELECT * FROM ${name}");
   }
 
   updateStudents(model, code, name) async {
@@ -182,7 +182,7 @@ class MainController extends GetxController {
         model["inchita"],
       );
 
-      database!.rawUpdate(
+      await database!.rawUpdate(
         "UPDATE $name SET fard1 = ?,fard2 = ?,inchita = ? WHERE id = ?",
         [
           model["fard1"],
@@ -191,6 +191,8 @@ class MainController extends GetxController {
           model["id"],
         ],
       );
+
+      database!.rawUpdate("");
     } else {
       moyen = Consts.countfor12(
         model["fard1"],
@@ -200,114 +202,123 @@ class MainController extends GetxController {
       );
 
       database!.rawUpdate(
-          "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ? WHERE id = ?",
-          [
-            model["fard1"],
-            model["fard2"],
-            model["fard3"],
-            model["inchita"],
-            model["id"]
-          ]);
+        "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ? WHERE id = ?",
+        [
+          model["fard1"],
+          model["fard2"],
+          model["fard3"],
+          model["inchita"],
+          model["id"],
+        ],
+      );
     }
+    getData(database!);
   }
 
   Widget tableComponents(model, code, name) {
     TextEditingController? fard3;
     Map usedModel = model;
-    TextEditingController name = TextEditingController(text: model["name"]);
-    TextEditingController fard1 = TextEditingController(text: model["fard1"].toString());
-    TextEditingController fatrd2 = TextEditingController(text: model["fard2"].toString());
+    TextEditingController name =
+        TextEditingController(text: model["name"].toString());
+    TextEditingController fard1 =
+        TextEditingController(text: model["fard1"].toString());
+    TextEditingController fatrd2 =
+        TextEditingController(text: model["fard2"].toString());
     if (code != "3AC")
-      TextEditingController fard3 = TextEditingController(text: model["fard3"].toString());
+      TextEditingController fard3 =
+          TextEditingController(text: model["fard3"].toString());
     TextEditingController inchita =
         TextEditingController(text: model["inchita"].toString());
     MainController controller = Get.find();
-    return Obx(() {
-      return Row(
-        children: [
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              child: TextField(
-                onChanged: (v) {
-                  usedModel["name"] = v;
-                },
-                enabled: controller.isEditing.value,
-                controller: name,
+    return Obx(
+      () {
+        return Row(
+          children: [
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  onChanged: (v) {
+                    usedModel["name"] = v;
+                  },
+                  enabled: controller.isEditing.value,
+                  controller: name,
+                ),
+                height: 50,
               ),
-              height: 50,
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              child: TextField(
-                onChanged: (v) {
-                  usedModel["name"] = v;
-                },
-                enabled: controller.isEditing.value,
-                controller: fard1,
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  onChanged: (v) {
+                    usedModel["name"] = v;
+                  },
+                  enabled: controller.isEditing.value,
+                  controller: fard1,
+                ),
+                height: 50,
               ),
-              height: 50,
             ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              child: TextField(
-                enabled: controller.isEditing.value,
-                controller: fatrd2,
-              ),
-              height: 50,
-            ),
-          ),
-          if (code != "3AC")
             Expanded(
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
                   enabled: controller.isEditing.value,
-                  controller: fard3!,
+                  controller: fatrd2,
                 ),
                 height: 50,
               ),
             ),
-          Expanded(        
-            child: Container(
-              margin: EdgeInsets.all(5),
-              child: TextField(
-                enabled: controller.isEditing.value,
-                controller: inchita,
-              ),
-              height: 50,
-            ),
-          ),
-          Expanded(
-            child: Container(
-              margin: EdgeInsets.all(5),
-              child: TextField(
-                enabled: false,
-                decoration: InputDecoration(
-                  hintText: "${usedModel["moyen"]}"
+            if (code != "3AC")
+              Expanded(
+                child: Container(
+                  margin: EdgeInsets.all(5),
+                  child: TextField(
+                    enabled: controller.isEditing.value,
+                    controller: fard3!,
+                  ),
+                  height: 50,
                 ),
               ),
-              height: 50,
-            ),
-          ),
-          Expanded(
-            child: Container(
-              height: 40,
-              child: FloatingActionButton(
-                onPressed: () async {
-                  controller.isEditing.value = !controller.isEditing.value;
-                },
-                child: Icon(
-                    controller.isEditing.value ? Icons.done : Icons.edit_road),
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  enabled: controller.isEditing.value,
+                  controller: inchita,
+                ),
+                height: 50,
               ),
             ),
-          )
-        ],
-      );
-    });
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  enabled: false,
+                  decoration:
+                      InputDecoration(hintText: "${usedModel["moyen"]}"),
+                ),
+                height: 50,
+              ),
+            ),
+            Expanded(
+              child: Container(
+                height: 40,
+                child: FloatingActionButton(
+                  onPressed: () async {
+                    if (controller.isEditing.value) updateStudents(usedModel, code, name);
+                    controller.isEditing.value = !controller.isEditing.value;
+                  },
+                  child: Icon(controller.isEditing.value
+                      ? Icons.done
+                      : Icons.edit_road),
+                ),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
