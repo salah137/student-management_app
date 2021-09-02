@@ -1,6 +1,10 @@
-import 'package:flutter/material.dart';
+import 'dart:math';
 
-class StudentTableScreen extends StatelessWidget {
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:stu_ma_/controllers/mainCon.dart';
+
+class StudentTableScreen extends StatefulWidget {
   Map model;
   String code;
   StudentTableScreen({
@@ -10,36 +14,29 @@ class StudentTableScreen extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _StudentTableScreenState createState() => _StudentTableScreenState();
+}
+
+class _StudentTableScreenState extends State<StudentTableScreen> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  bool edit = false;
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: DataTable(
-          columns: [
-            DataColumn(
-              label: Text(''),
-            ),
-            DataColumn(
-              label: Text(''),
-            ),
-            DataColumn(
-              label: Text(''),
-            ),
-            if (code != "3AC")
-              DataColumn(
-                label: Text(''),
-              ),
-            DataColumn(
-              label: Text(''),
-            ),
-            DataColumn(
-              label: Text(''),
-            ),
-          ],
-          rows: [
-              
-          ],
-        ),
-      ),
+    print(widget.code);
+    return GetBuilder<MainController>(
+      init: MainController(),
+      builder: (contr) {
+        return Scaffold(
+          body: ListView(
+            children: [
+            ],
+          ),
+        );
+      },
     );
   }
 }

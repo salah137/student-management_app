@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:stu_ma_/controllers/mainCon.dart';
 import 'package:stu_ma_/views/second.dart';
 import 'package:stu_ma_/views/table.dart';
 
@@ -30,11 +31,10 @@ Widget itemBuilder(context, model, code) {
   );
 }
 
-Widget classBuilder(model, code) {
- 
- return GestureDetector(
-    onTap: () {
-      
+Widget classBuilder(model, code, MainController controller) {
+  return GestureDetector(
+    onTap: () async {
+      await controller.getClassByName(model["name"]);
       Get.to(
         () => StudentTableScreen(
           model: model,
@@ -56,3 +56,4 @@ Widget classBuilder(model, code) {
     ),
   );
 }
+

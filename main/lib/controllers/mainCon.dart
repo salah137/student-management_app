@@ -9,13 +9,14 @@ class MainController extends GetxController {
   var level3 = [].obs;
   var level2 = [].obs;
   var usedStudentLisy = [].obs;
+  var isEditing = false.obs;
+
+  Database? database;
   @override
   void onInit() async {
     await openMyDataBase();
     super.onInit();
   }
-
-  Database? database;
 
   Future openMyDataBase() async {
     database = await openDatabase("my.db", version: 1, onCreate: (db, v) {
@@ -168,8 +169,98 @@ class MainController extends GetxController {
         backgroundColor: Colors.white);
   }
 
-  getClassByName(name) async {
+  Future getClassByName(name) async {
     usedStudentLisy.value = await database!.rawQuery("SELECT * FROM ${name}");
-    
+  }
+
+  tableComponents(model, code) {
+    Map usedModel = model;
+    TextEditingController name = TextEditingController(text: model["name"]);
+    TextEditingController fard1 = TextEditingController(text: model["fard1"]);
+    TextEditingController fatrd2 = TextEditingController(text: model["fard2"]);
+    if (code != "3AC")
+      TextEditingController fard3 = TextEditingController(text: model["fard3"]);
+    TextEditingController inchita =
+        TextEditingController(text: model["inchita"]);
+    MainController controller = Get.find();
+    return Obx(() {
+      return Row(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: TextField(
+                enabled: controller.isEditing.value,
+                controller: name,
+              ),
+              height: 50,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: TextField(
+                enabled: controller.isEditing.value,
+                controller: TextEditingController(text: "name"),
+              ),
+              height: 50,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: TextField(
+                enabled: controller.isEditing.value,
+                controller: TextEditingController(text: "name"),
+              ),
+              height: 50,
+            ),
+          ),
+          if (code != "3AC")
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.all(5),
+                child: TextField(
+                  enabled: controller.isEditing.value,
+                  controller: TextEditingController(text: "name"),
+                ),
+                height: 50,
+              ),
+            ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: TextField(
+                enabled: controller.isEditing.value,
+                controller: TextEditingController(text: "name"),
+              ),
+              height: 50,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(5),
+              child: TextField(
+                enabled: controller.isEditing.value,
+                controller: TextEditingController(text: "name"),
+              ),
+              height: 50,
+            ),
+          ),
+          Expanded(
+            child: Container(
+              height: 40,
+              child: FloatingActionButton(
+                onPressed: () {
+                  controller.isEditing.value = !controller.isEditing.value;
+                },
+                child: Icon(
+                    controller.isEditing.value ? Icons.done : Icons.edit_road),
+              ),
+            ),
+          )
+        ],
+      );
+    });
   }
 }

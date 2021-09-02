@@ -22,6 +22,7 @@ class LevelScreen extends StatelessWidget {
                     ? cont.level2.value[i]
                     : cont.level3.value[i],
             code,
+            cont,
           ),
           itemCount: code == "1AC"
               ? cont.level1.value.length
