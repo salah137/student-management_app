@@ -1,5 +1,7 @@
+import 'dart:io' ;
 import 'dart:math';
 
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
@@ -519,5 +521,46 @@ class MainController extends GetxController {
         ),
       ),
     );
+  }
+
+  Future toCsv(className, code) async {
+    getClassByName(className);
+    var result = ListToCsvConverter().convert([
+      [
+        "الاسم الكامل",
+        "الفرض الاول",
+        "الفرض الثاني",
+        if (code != "3AC") "الفرض الثالث",
+        "الانشطة",
+        "المعدل العام",
+        "الملاحظات"
+      ],
+      ...usedStudentList.map(
+        (element) {
+          return [
+            element["name"],
+            element["fard1"],
+            element["fard2"],
+            if (code != "3AC") element["fard3"],
+            element["inchita"],
+            element["moyen"],
+            getRating(
+              element["moyen"],
+            ),
+          ];
+        },
+      ),
+    ]);
+    String path = "/storage/emulated/csvFiles/$className\.csv";
+    var file;
+    if (await File(path).exists())
+      file = await File(path).openWrite();
+    else {
+      await File(path).create();
+      file = File(path).openWrite();
+    }
+
+    await file.write(result);
+    file.close();
   }
 }
