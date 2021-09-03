@@ -1,9 +1,10 @@
-import 'dart:io' ;
+import 'dart:io';
 import 'dart:math';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
 import 'package:stu_ma_/models/Consts.dart';
@@ -499,7 +500,7 @@ class MainController extends GetxController {
     getData(database!);
   }
 
-  onLongPressCom( level, context, model) {
+  onLongPressCom(level, context, model) {
     Get.bottomSheet(
       Column(
         children: [
@@ -533,7 +534,7 @@ class MainController extends GetxController {
             child: ClipRRect(
               child: MaterialButton(
                 onPressed: () async {
-                  await toCsv(model["name"],level);
+                  await toCsv(model["name"], level);
                   Navigator.pop(context);
                 },
                 child: Text("طبع القسم"),
@@ -541,7 +542,6 @@ class MainController extends GetxController {
               borderRadius: BorderRadius.circular(15),
             ),
           ),
-          
         ],
       ),
     );
@@ -549,6 +549,7 @@ class MainController extends GetxController {
 
   Future toCsv(className, code) async {
     getClassByName(className);
+    Directory appDir = await getApplicationDocumentsDirectory();
     var result = ListToCsvConverter().convert([
       [
         "الاسم الكامل",
@@ -575,16 +576,22 @@ class MainController extends GetxController {
         },
       ),
     ]);
-    String path = "/storage/emulated/csvFiles/$className\.csv";
-    var file;
-    if (await File(path).exists())
-      file = await File(path).openWrite();
-    else {
-      await File(path).create();
-      file = File(path).openWrite();
-    }
+    String path = "/storage/emulated/csvFiles/";
+    await Directory(appDir.path + "/" + "csvFiles")
+        .create()
+        .then((value) async {
+      var file;
+      if (await File(path).exists())
+        file = await File("${value.path}$className\.csv").openWrite();
+      else {
+        await File("${value.path}$className.csv").create();
+        file = File("${value.path}$className.csv").openWrite();
+      }
 
-    await file.write(result);
-    file.close();
+      await file.write(result);
+      print(value.path);
+      file.close();
+      print("finish");
+    });
   }
 }
