@@ -499,26 +499,50 @@ class MainController extends GetxController {
     getData(database!);
   }
 
-  deletUi(id, level, context) {
+  onLongPressCom( level, context, model) {
     Get.bottomSheet(
-      Container(
-        margin: EdgeInsets.all(50),
-        height: 40,
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.green,
-          borderRadius: BorderRadius.circular(15),
-        ),
-        child: ClipRRect(
-          child: MaterialButton(
-            onPressed: () async {
-              await deleteClass(id, level);
-              Navigator.pop(context);
-            },
-            child: Text("مسح القسم"),
+      Column(
+        children: [
+          Container(
+            margin: EdgeInsets.all(50),
+            height: 40,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ClipRRect(
+              child: MaterialButton(
+                onPressed: () async {
+                  await deleteClass(model["id"], level);
+                  Navigator.pop(context);
+                },
+                child: Text("مسح القسم"),
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
           ),
-          borderRadius: BorderRadius.circular(15),
-        ),
+          Container(
+            margin: EdgeInsets.all(50),
+            height: 40,
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Colors.green,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ClipRRect(
+              child: MaterialButton(
+                onPressed: () async {
+                  await toCsv(model["name"],level);
+                  Navigator.pop(context);
+                },
+                child: Text("طبع القسم"),
+              ),
+              borderRadius: BorderRadius.circular(15),
+            ),
+          ),
+          
+        ],
       ),
     );
   }

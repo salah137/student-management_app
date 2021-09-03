@@ -34,14 +34,15 @@ Widget itemBuilder(context, model, code) {
 Widget classBuilder(model, code, MainController controller, context) {
   return GestureDetector(
     onLongPress: () {
-      controller.deletUi(
-          model["id"],
-          code == "1AC"
-              ? "first"
-              : code == "2AC"
-                  ? "second"
-                  : "third",
-          context);
+      controller.onLongPressCom(
+        code == "1AC"
+            ? "first"
+            : code == "2AC"
+                ? "second"
+                : "third",
+        context,
+        model,
+      );
     },
     onTap: () async {
       await controller.getClassByName(model["name"]);
