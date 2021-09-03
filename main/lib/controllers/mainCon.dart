@@ -549,7 +549,7 @@ class MainController extends GetxController {
 
   Future toCsv(className, code) async {
     getClassByName(className);
-    Directory appDir = await getApplicationDocumentsDirectory();
+    Directory appDir = await getTemporaryDirectory();
     var result = ListToCsvConverter().convert([
       [
         "الاسم الكامل",
@@ -576,21 +576,13 @@ class MainController extends GetxController {
         },
       ),
     ]);
-    String path = "/storage/emulated/csvFiles/";
     await Directory(appDir.path + "/" + "csvFiles")
-        .create()
+        .create(recursive: true)
         .then((value) async {
-      var file;
-      if (await File(path).exists())
-        file = await File("${value.path}$className\.csv").openWrite();
-      else {
-        await File("${value.path}$className.csv").create();
-        file = File("${value.path}$className.csv").openWrite();
-      }
+      File file = File("${value.path}$className.csv");
 
-      await file.write(result);
+      await file.writeAsString(result);
       print(value.path);
-      file.close();
       print("finish");
     });
   }
