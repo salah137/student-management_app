@@ -1,7 +1,13 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:stu_ma_/views/Home.dart';
+import 'package:appo/views/Home.dart';
 import 'package:get/get.dart';
-void main() {
+import 'package:permission_handler/permission_handler.dart';
+
+void main() async {
+  await WidgetsFlutterBinding.ensureInitialized();
+  await Permission.storage.request();
   runApp(MyApp());
 }
 
@@ -11,12 +17,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
+      title: 'قسمي',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: Directionality(child: HomeScreen(), textDirection: TextDirection.rtl,),
+      home: Directionality(
+        child: HomeScreen(),
+        textDirection: TextDirection.rtl,
+      ),
     );
   }
 }
-

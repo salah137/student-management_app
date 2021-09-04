@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:stu_ma_/components/components.dart';
-import 'package:stu_ma_/controllers/mainCon.dart';
+import 'package:appo/components/components.dart';
+import 'package:appo/controllers/mainCon.dart';
 
 class LevelScreen extends StatelessWidget {
   final code;

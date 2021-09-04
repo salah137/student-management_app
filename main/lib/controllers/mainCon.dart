@@ -2,12 +2,15 @@ import 'dart:io';
 import 'dart:math';
 
 import 'package:csv/csv.dart';
+import 'package:ext_storage/ext_storage.dart';
+import 'package:filesystem_picker/filesystem_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:stu_ma_/models/Consts.dart';
+import 'package:appo/models/Consts.dart';
 
 class MainController extends GetxController {
   var level1 = [].obs;
@@ -15,7 +18,7 @@ class MainController extends GetxController {
   var level2 = [].obs;
   var usedStudentList = [].obs;
   var isEditing = false.obs;
-
+  var btnIsShwing = false.obs;
   Database? database;
   @override
   void onInit() async {
@@ -180,6 +183,7 @@ class MainController extends GetxController {
   }
 
   updateStudents(model, code, name) async {
+    print(model);
     var moyen;
     if (code == "3AC") {
       moyen = Consts.count3(
@@ -209,7 +213,7 @@ class MainController extends GetxController {
         model["inchita"],
       );
 
-      print(moyen);
+      print("moyen =>$moyen");
 
       database!.rawUpdate(
         "UPDATE $name SET fard1 = ?,fard2 = ?,fard3 = ?,inchita = ?, moyen = ? WHERE id = ?",
@@ -228,6 +232,9 @@ class MainController extends GetxController {
   }
 
   Widget tableComponents(model, code, namee) {
+    if (model["id"] > 1) {
+      btnIsShwing.value = true;
+    }
     TextEditingController? fard3;
     Map usedModel = Map<String, dynamic>.from(model);
     TextEditingController name =
@@ -249,6 +256,9 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onTap: () {
+                    name.text = "";
+                  },
                   onChanged: (v) {
                     usedModel["name"] = int.tryParse(v);
                   },
@@ -262,6 +272,9 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onTap: () {
+                    fard1.text = "";
+                  },
                   onChanged: (v) {
                     usedModel["fard1"] = int.tryParse(v);
                     ;
@@ -276,6 +289,9 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onTap: () {
+                    fatrd2.text = "";
+                  },
                   onChanged: (v) {
                     usedModel["fard2"] = int.tryParse(v);
                     ;
@@ -291,6 +307,9 @@ class MainController extends GetxController {
                 child: Container(
                   margin: EdgeInsets.all(5),
                   child: TextField(
+                    onTap: () {
+                      fard3!.text = "";
+                    },
                     onChanged: (v) {
                       usedModel["fard3"] = int.tryParse(v);
                     },
@@ -304,9 +323,11 @@ class MainController extends GetxController {
               child: Container(
                 margin: EdgeInsets.all(5),
                 child: TextField(
+                  onTap: () {
+                    inchita.text = "";
+                  },
                   onChanged: (v) {
                     usedModel["inchita"] = int.tryParse(v);
-                    ;
                   },
                   enabled: controller.isEditing.value,
                   controller: inchita,
@@ -325,16 +346,16 @@ class MainController extends GetxController {
                 height: 50,
               ),
             ),
-            Expanded(
-              child: Text(
+           Text(
                 getRating(
                   usedModel["moyen"],
                 ),
               ),
-            ),
-            Expanded(
-              child: Container(
+            
+           Container(
+             margin: EdgeInsets.all(3),
                 height: 40,
+                width: 30,
                 child: FloatingActionButton(
                   heroTag: "btn${Random().nextInt(100)}",
                   onPressed: () async {
@@ -344,10 +365,10 @@ class MainController extends GetxController {
                   },
                   child: Icon(controller.isEditing.value
                       ? Icons.done
-                      : Icons.edit_road),
+                      : Icons.edit),
                 ),
               ),
-            )
+            
           ],
         );
       },
@@ -534,7 +555,7 @@ class MainController extends GetxController {
             child: ClipRRect(
               child: MaterialButton(
                 onPressed: () async {
-                  await toCsv(model["name"], level);
+                  await toCsv(model["name"], level, context);
                   Navigator.pop(context);
                 },
                 child: Text("طبع القسم"),
@@ -547,15 +568,28 @@ class MainController extends GetxController {
     );
   }
 
-  Future toCsv(className, code) async {
+  Future toCsv(className, code, context) async {
+    print(className);
     getClassByName(className);
-    Directory appDir = await getTemporaryDirectory();
+    String path = await FilesystemPicker.open(
+      title: 'Save to folder',
+      context: context,
+      rootDirectory: Directory(
+          await ExtStorage.getExternalStoragePublicDirectory(
+              ExtStorage.DIRECTORY_DOCUMENTS)),
+      fsType: FilesystemType.folder,
+      pickText: 'Save file to this folder',
+      folderIconColor: Colors.teal,
+    );
+    print(await ExtStorage.getExternalStoragePublicDirectory(
+        ExtStorage.DIRECTORY_DOCUMENTS));
+
     var result = ListToCsvConverter().convert([
       [
         "الاسم الكامل",
         "الفرض الاول",
         "الفرض الثاني",
-        if (code != "3AC") "الفرض الثالث",
+        (code != "3AC")? "الفرض الثالث":"",
         "الانشطة",
         "المعدل العام",
         "الملاحظات"
@@ -566,7 +600,7 @@ class MainController extends GetxController {
             element["name"],
             element["fard1"],
             element["fard2"],
-            if (code != "3AC") element["fard3"],
+            code != "3AC"? element["fard3"] :"",
             element["inchita"],
             element["moyen"],
             getRating(
@@ -576,14 +610,10 @@ class MainController extends GetxController {
         },
       ),
     ]);
-    await Directory(appDir.path + "/" + "csvFiles")
-        .create(recursive: true)
-        .then((value) async {
-      File file = File("${value.path}$className.csv");
-
-      await file.writeAsString(result);
-      print(value.path);
-      print("finish");
-    });
+    var file = await File("${path}/${className}.csv").create(recursive: true);
+    await file.writeAsString(result);
+    Navigator.pop(context); 
+    Get.snackbar("Done", "the fil was saved in Documents",
+        backgroundColor: Colors.green, colorText: Colors.white);
   }
 }
