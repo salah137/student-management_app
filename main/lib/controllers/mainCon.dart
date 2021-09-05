@@ -10,7 +10,7 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite/sqlite_api.dart';
-import 'package:appo/models/Consts.dart';
+import 'package:stu_ma_/models/Consts.dart';
 
 class MainController extends GetxController {
   var level1 = [].obs;
@@ -346,29 +346,26 @@ class MainController extends GetxController {
                 height: 50,
               ),
             ),
-           Text(
-                getRating(
-                  usedModel["moyen"],
-                ),
+            Text(
+              getRating(
+                usedModel["moyen"],
               ),
-            
-           Container(
-             margin: EdgeInsets.all(3),
-                height: 40,
-                width: 30,
-                child: FloatingActionButton(
-                  heroTag: "btn${Random().nextInt(100)}",
-                  onPressed: () async {
-                    if (controller.isEditing.value)
-                      updateStudents(usedModel, code, namee);
-                    controller.isEditing.value = !controller.isEditing.value;
-                  },
-                  child: Icon(controller.isEditing.value
-                      ? Icons.done
-                      : Icons.edit),
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.all(3),
+              height: 40,
+              width: 30,
+              child: FloatingActionButton(
+                heroTag: "btn${Random().nextInt(100)}",
+                onPressed: () async {
+                  if (controller.isEditing.value)
+                    updateStudents(usedModel, code, namee);
+                  controller.isEditing.value = !controller.isEditing.value;
+                },
+                child:
+                    Icon(controller.isEditing.value ? Icons.done : Icons.edit),
               ),
-            
+            ),
           ],
         );
       },
@@ -589,7 +586,7 @@ class MainController extends GetxController {
         "الاسم الكامل",
         "الفرض الاول",
         "الفرض الثاني",
-        (code != "3AC")? "الفرض الثالث":"",
+        (code != "3AC") ? "الفرض الثالث" : "",
         "الانشطة",
         "المعدل العام",
         "الملاحظات"
@@ -600,7 +597,7 @@ class MainController extends GetxController {
             element["name"],
             element["fard1"],
             element["fard2"],
-            code != "3AC"? element["fard3"] :"",
+            code != "3AC" ? element["fard3"] : "",
             element["inchita"],
             element["moyen"],
             getRating(
@@ -612,7 +609,7 @@ class MainController extends GetxController {
     ]);
     var file = await File("${path}/${className}.csv").create(recursive: true);
     await file.writeAsString(result);
-    Navigator.pop(context); 
+    Navigator.pop(context);
     Get.snackbar("Done", "the fil was saved in Documents",
         backgroundColor: Colors.green, colorText: Colors.white);
   }

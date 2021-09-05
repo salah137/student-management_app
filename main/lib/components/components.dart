@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:appo/controllers/mainCon.dart';
-import 'package:appo/views/second.dart';
-import 'package:appo/views/table.dart';
+import 'package:stu_ma_/controllers/mainCon.dart';
+import 'package:stu_ma_/views/second.dart';
+import 'package:stu_ma_/views/table.dart';
 
 Widget itemBuilder(context, model, code) {
   print(code);

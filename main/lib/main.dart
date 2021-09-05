@@ -1,9 +1,9 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:appo/views/Home.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:stu_ma_/views/Home.dart';
 
 void main() async {
   await WidgetsFlutterBinding.ensureInitialized();
